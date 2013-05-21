@@ -5,6 +5,7 @@ src: url('../fonts/Harabara.ttf')
     ,url('../fonts/Harabara.eot'); /* IE9 */
 }
 
+
 .logo {
   display: block;
   position: fixed;
@@ -78,4 +79,8 @@ a {
 
 footer {
   background: white;
+}
+
+h1 {
+  margin-top: 40px;
 }
