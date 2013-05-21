@@ -11,7 +11,7 @@ test: clean
 	@steadymark docs/*.md
 docs: clean
 	@steadymark docs/*.md
-	@git co gh-pages && git merge master && markment -o . -t theme docs && git add . && git commit -am 'documentation' && git push
+	@git co master && (git br -D gh-pages || printf "") && git checkout --orphan gh-pages && markment -o . -t theme docs && cp quick-start.html index.html && git add . && git commit -am 'documentation' && git push --force origin gh-pages && git checkout master
 clean:
 	@printf "Cleaning up files that are already in .gitignore... "
 	@for pattern in `cat .gitignore`; do rm -rf $$pattern; find . -name "$$pattern" -exec rm -rf {} \;; done

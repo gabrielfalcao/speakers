@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/gabrielfalcao/speakers.png)](https://travis-ci.org/gabrielfalcao/speakers)
 # Simple usage
 
 
