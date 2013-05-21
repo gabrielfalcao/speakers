@@ -26,6 +26,6 @@ def print_results(event, results):
 # emit the event
 
 ```python
-results = connection.query("SELECT * FROM blabla")
+results = ["res1", "res2", "res3"]
 after.getting_sql_results.shout(results)
 ```
