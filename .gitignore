@@ -1,0 +1,9 @@
+*.pyc
+.coverage
+speakers.egg-info/
+build/
+dist/
+.DS_Store
+*.swp
+.tox
+./_public

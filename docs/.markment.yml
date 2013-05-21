@@ -1,0 +1,10 @@
+project:
+  name: Speakers
+  version: 0.0.1
+  github_maintainer: gabrielfalcao
+  description: Simple signal system for python
+  github_url: http://github.com/gabrielfalcao/speakers
+  tarball_download_url: https://github.com/gabrielfalcao/speakers/archive/master.tar.gz
+
+documentation:
+  index: quick-start.md
