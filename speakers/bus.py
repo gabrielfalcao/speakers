@@ -86,6 +86,7 @@ class Speaker(object):
         for action in map(underlinefy, actions):
             self.actions[action] = nicepartial(self.for_decorator, action)
             self.actions[action].shout = nicepartial(self.shout, action)
+            self.actions[action].unplug = nicepartial(self.unplug, action)
             setattr(self, action, self.actions[action])
 
     def __str__(self):
@@ -131,6 +132,8 @@ class Speaker(object):
             hook=wrapper.__name__,
             lineno=responder.lineno,
         )
+        wrapper.callback = callback
+        wrapper.responder = responder
         self.hooks[action].append(wrapper)
         return responder
 
@@ -139,3 +142,13 @@ class Speaker(object):
             result = hook(*args, **kw)
             if result:
                 return result
+
+    def unplug(self, action, callback):
+        hooks = self.hooks[action]
+        for hook in hooks:
+            if callback.call == hook.callback:
+                hooks.remove(hook)
+
+    def release(self, action):
+        while self.hooks[action]:
+            self.hooks[action].pop()

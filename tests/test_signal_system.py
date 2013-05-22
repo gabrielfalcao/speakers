@@ -159,3 +159,47 @@ def test_2_listeners_with_exception_handler():
 
     before.exception_handler.when.called_with(lambda: None).should.throw(
         RuntimeError, 'Attempt to register Function(name="<lambda>", lineno="161", filename="tests/test_signal_system.py") as an exception_handler for Speaker(name=on, actions=OrderedDict([(u\'file_created\', partial:for_decorator)]), total_hooks=0), but it already has <bound method Speaker.exception_handler of Speaker(name=on, actions=OrderedDict([(u\'file_created\', partial:for_decorator)]), total_hooks=0)> assigned')
+
+
+def test_unregister_listeners():
+    "It should be possible to unregister listeners"
+
+    when = Speaker('when', ['ready'])
+
+    @when.ready
+    def dont_call_me(event):
+        raise RuntimeError("You got served")
+
+    @when.ready
+    def do_something(event):
+        raise RuntimeError("You got served")
+
+    @when.ready
+    def do_something_else(event):
+        event.hooks['ready'].should.have.length_of(1)
+
+    when.unplug('ready', dont_call_me)
+    when.ready.unplug(do_something)
+    when.ready.shout()
+
+
+def test_unregister_all_listeners():
+    "It should be possible to unregister all listeners at once"
+
+    when = Speaker('when', ['ready'])
+
+    @when.ready
+    def dont_call_me(event):
+        raise RuntimeError("You got served")
+
+    @when.ready
+    def do_something(event):
+        raise RuntimeError("You got served")
+
+    @when.ready
+    def do_something_else(event):
+        event.hooks['ready'].should.have.length_of(1)
+
+    when.hooks['ready'].should.have.length_of(3)
+    when.release('ready')
+    when.hooks['ready'].should.be.empty
