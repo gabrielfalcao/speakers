@@ -183,8 +183,8 @@ def test_unregister_listeners():
     when.ready.shout()
 
 
-def test_unregister_all_listeners():
-    "It should be possible to unregister all listeners at once"
+def test_unregister_all_listeners_from_action():
+    "It should be possible to unregister all listeners under an action at once"
 
     when = Speaker('when', ['ready'])
 
@@ -203,3 +203,56 @@ def test_unregister_all_listeners():
     when.hooks['ready'].should.have.length_of(3)
     when.release('ready')
     when.hooks['ready'].should.be.empty
+
+
+def test_unregister_all_listeners_from_speaker():
+    "It should be possible to unregister all listeners of a speaker at once"
+
+    when = Speaker('when', ['ready', 'loading'])
+
+    @when.ready
+    def dont_call_me(event):
+        raise RuntimeError("You got served")
+
+    @when.loading
+    def do_something(event):
+        raise RuntimeError("You got served")
+
+    when.hooks['ready'].should.have.length_of(1)
+    when.hooks['loading'].should.have.length_of(1)
+    when.release()
+    when.hooks['ready'].should.be.empty
+    when.hooks['loading'].should.be.empty
+
+
+def test_unregister_all_listeners():
+    "It should be possible to unregister all listeners of all speakers"
+
+    when = Speaker('when', ['ready', 'loading'])
+    after = Speaker('after', ['ready', 'loading'])
+
+    @when.ready
+    def dont_call_me(event):
+        raise RuntimeError("You got served")
+
+    @when.loading
+    def do_something(event):
+        raise RuntimeError("You got served")
+
+    @after.ready
+    def after_all(event):
+        raise RuntimeError("You got served")
+
+    @after.loading
+    def loading_after(event):
+        raise RuntimeError("You got served")
+
+    when.hooks['ready'].should.have.length_of(1)
+    when.hooks['loading'].should.have.length_of(1)
+    after.hooks['ready'].should.have.length_of(1)
+    after.hooks['loading'].should.have.length_of(1)
+    Speaker.release_all()
+    when.hooks['ready'].should.be.empty
+    when.hooks['loading'].should.be.empty
+    after.hooks['ready'].should.be.empty
+    after.hooks['loading'].should.be.empty

@@ -72,6 +72,8 @@ class Function(object):
         sys.stderr = sys.__stderr__
         return self.call(*args, **kw)
 
+SPEAKERS = OrderedDict()
+
 
 class Speaker(object):
     def __init__(self, name, actions, output=None):
@@ -88,6 +90,8 @@ class Speaker(object):
             self.actions[action].shout = nicepartial(self.shout, action)
             self.actions[action].unplug = nicepartial(self.unplug, action)
             setattr(self, action, self.actions[action])
+
+        SPEAKERS[name] = self
 
     def __str__(self):
         return 'Speaker(name={0}, actions={1}, total_hooks={2})'.format(
@@ -149,6 +153,14 @@ class Speaker(object):
             if callback.call == hook.callback:
                 hooks.remove(hook)
 
-    def release(self, action):
+    def release(self, action=None):
+        if action is None:
+            return map(self.release, self.hooks.keys())
+
         while self.hooks[action]:
             self.hooks[action].pop()
+
+    @classmethod
+    def release_all(cls):
+        for instance in SPEAKERS.values():
+            instance.release()

@@ -31,7 +31,10 @@ results = ["res1", "res2", "res3"]
 after.getting_sql_results.shout(results)
 ```
 
-# unplugging an event
+# unplugging events
+
+
+## a single event callback
 
 ```python
 when = Speaker('when', ['ready'])
@@ -51,8 +54,7 @@ when.ready.unplug(never_called)
 when.ready.shout()
 ```
 
-
-# unplugging all events
+## unplugging an action of a speaker
 
 ```python
 when = Speaker('when', ['ready'])
@@ -69,5 +71,53 @@ def called_once(event):
 when.release('ready')
 
 # nothing will happen
+when.ready.shout()
+```
+
+
+## unplugging all actions of a speaker
+
+```python
+when = Speaker('when', ['ready', 'loading'])
+
+@when.ready
+def dont_call_me(event):
+    raise RuntimeError("You got served")
+
+@when.loading
+def do_something(event):
+    raise RuntimeError("You got served")
+
+when.release()
+
+# nothing will happen
+when.ready.shout()
+```
+
+
+## unplugging all actions of all existing speakers
+
+```python
+when = Speaker('when', ['ready', 'loading'])
+after = Speaker('after', ['ready', 'loading'])
+
+@when.ready
+def dont_call_me(event):
+    raise RuntimeError("You got served")
+
+@when.loading
+def do_something(event):
+    raise RuntimeError("You got served")
+
+@after.ready
+def after_all(event):
+    raise RuntimeError("You got served")
+
+@after.loading
+def loading_after(event):
+    raise RuntimeError("You got served")
+
+Speaker.release_all()
+
 when.ready.shout()
 ```
