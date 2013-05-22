@@ -28,6 +28,24 @@ from __future__ import unicode_literals
 
 from mock import Mock
 from speakers.bus import Function, Speaker
+from speakers.bus import _function_matches
+
+
+def test_function_matches_compares_with_abs_path():
+    u"speakers.bus._function_matches() should compare callback filenames with abspath"
+
+    class fakecallback1:
+        class func_code:
+            co_filename = "/some/path/to/some/../file.py"
+            co_firstlineno = 1
+
+    class fakecallback2:
+        class func_code:
+            co_filename = "/some/path/to/file.py"
+            co_firstlineno = 1
+
+    assert _function_matches(fakecallback1, fakecallback2), \
+        'the callbacks should have matched'
 
 
 def test_function_as_string():
@@ -38,7 +56,7 @@ def test_function_as_string():
 
     s = Function(testing)
 
-    str(s).should.equal('Function(name="testing", lineno="37", filename="tests/test_signal_system.py")')
+    str(s).should.equal('Function(name="testing", lineno="55", filename="tests/test_signal_system.py")')
 
 
 def test_function_repr():
@@ -49,7 +67,7 @@ def test_function_repr():
 
     s = Function(testing)
 
-    repr(s).should.equal(b'Function(name="testing", lineno="48", filename="tests/test_signal_system.py")')
+    repr(s).should.equal(b'Function(name="testing", lineno="66", filename="tests/test_signal_system.py")')
 
 
 def test_speaker_with_wrong_parameter():
@@ -88,7 +106,7 @@ def test_speaker_keys():
 
     sp = Speaker('before', ['file_created'])
     sp.file_created(obeyer).key.should.equal(
-        'before:file_created[tests.test_signal_system:obeyer:87]')
+        'before:file_created[tests.test_signal_system:obeyer:105]')
 
 
 def test_listeners_with_exceptions():
@@ -158,7 +176,7 @@ def test_2_listeners_with_exception_handler():
         pass
 
     before.exception_handler.when.called_with(lambda: None).should.throw(
-        RuntimeError, 'Attempt to register Function(name="<lambda>", lineno="161", filename="tests/test_signal_system.py") as an exception_handler for Speaker(name=on, actions=OrderedDict([(u\'file_created\', partial:for_decorator)]), total_hooks=0), but it already has <bound method Speaker.exception_handler of Speaker(name=on, actions=OrderedDict([(u\'file_created\', partial:for_decorator)]), total_hooks=0)> assigned')
+        RuntimeError, 'Attempt to register Function(name="<lambda>", lineno="179", filename="tests/test_signal_system.py") as an exception_handler for Speaker(name=on, actions=OrderedDict([(u\'file_created\', partial:for_decorator)]), total_hooks=0), but it already has <bound method Speaker.exception_handler of Speaker(name=on, actions=OrderedDict([(u\'file_created\', partial:for_decorator)]), total_hooks=0)> assigned')
 
 
 def test_unregister_listeners():

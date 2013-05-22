@@ -35,6 +35,11 @@ from .handy import underlinefy, nicepartial
 ENCODE = 'utf-8'
 
 
+def _function_matches(one, other):
+    return (os.path.abspath(one.func_code.co_filename) == os.path.abspath(other.func_code.co_filename) and
+            one.func_code.co_firstlineno == other.func_code.co_firstlineno)
+
+
 class Function(object):
     def __init__(self, func):
         self.call = func
