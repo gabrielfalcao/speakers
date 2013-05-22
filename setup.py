@@ -41,7 +41,7 @@ requirements = [
 ]
 
 setup(name='speakers',
-      version='0.0.2',
+      version='0.0.3',
       description=(u'Simple signal system for python'),
       author=u'Gabriel Falcao',
       author_email='gabriel@nacaolivre.org',

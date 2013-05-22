@@ -1,6 +1,6 @@
 project:
   name: Speakers
-  version: 0.0.2
+  version: 0.0.3
   github_maintainer: gabrielfalcao
   description: Simple signal system for python
   github_url: http://github.com/gabrielfalcao/speakers
