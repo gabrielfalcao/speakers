@@ -66,7 +66,7 @@ def called_once(event):
     assert len(event.hooks["ready"]) == 1
 
 
-when.ready.release()
+when.release('ready')
 
 # nothing will happen
 when.ready.shout()
