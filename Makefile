@@ -14,7 +14,7 @@ docs: clean
 	@git co master && \
 		(git br -D gh-pages || printf "") && \
 		git checkout --orphan gh-pages && \
-		markment -o . -t theme docs && \
+		markment -o . -t theme docs --sitemap-for=http://falcao.it/markment && \
 		cp quick-start.html index.html && \
 		git add . && \
 		git commit -am 'documentation' && \
