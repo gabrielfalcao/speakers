@@ -24,7 +24,7 @@ on = Speaker('on', ['ready', 'loading'])
 @on.ready
 def show_ready(event, dom):
     print "The DOM is ready!"
-    print "The page title is", dom.cssselect("title")[0].text
+    print "The page title is", dom.cssselect("title")
 
 @on.loading
 def show_loading(event):
@@ -34,10 +34,12 @@ on.loading.shout()
 
 
 fake_dom = Mock()
-fake_dom.cssselect.return_value = ["A cool title!"]
+fake_dom.cssselect.return_value = "A cool title!"
 
 on.loading.shout()
 on.ready.shout(fake_dom)
+
+fake_dom.cssselect.assert_called_once_with("title")
 ```
 
 
