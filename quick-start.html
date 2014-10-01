@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Speakers by gabrielfalcao</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
+
+    <!-- Loading Bootstrap -->
+    <link href="./assets/css/bootstrap.css" rel="stylesheet">
+    <link href="./assets/css/markment.css" rel="stylesheet">
+
+    <link href="./assets/css/github.css" rel="stylesheet">
+    <link rel="shortcut icon" href="./assets/images/favicon.ico">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-1277640-18', 'falcao.it');
+  ga('send', 'pageview');
+
+</script>
+
+
+    <div class="container">
+      <div class="logo">
+        <h1>Speakers
+         <em>v0.0.3</em>
+</h1>
+
+
+        <small>Simple signal system for python</small></h1>
+      </div>
+      <div class="row">
+        <div class="span4">
+          <ul class="nav nav-list menu">
+            <li><h3><a href="#init">Sections</a></h3></li>
+              
+                <li>
+    <a class="btn-large"
+       href="#installing">
+       Installing
+    </a>
+    </li>
+
+  
+              
+                <li>
+    <a class="btn-large"
+       href="#declare-an-event">
+       declare an event
+    </a>
+    </li>
+
+  
+              
+                <li>
+    <a class="btn-large"
+       href="#declare-as-many-listeners-as-you-want">
+       declare as many listeners as you want
+    </a>
+    </li>
+
+  
+              
+                <li>
+    <a class="btn-large"
+       href="#emit-the-event">
+       emit the event
+    </a>
+    </li>
+
+  
+              
+                <li>
+    <a class="btn-large"
+       href="#declare-exception-handlers">
+       declare exception handlers
+    </a>
+    </li>
+
+  
+              
+                <li>
+    <a class="btn-large"
+       href="#unplugging-events">
+       unplugging events
+    </a>
+    </li>
+
+  
+    
+      <li>
+    <a class="btn-large"
+       href="#a-single-event-callback">
+       a single event callback
+    </a>
+    </li>
+
+  
+    
+      <li>
+    <a class="btn-large"
+       href="#unplugging-an-action-of-a-speaker">
+       unplugging an action of a speaker
+    </a>
+    </li>
+
+  
+    
+      <li>
+    <a class="btn-large"
+       href="#unplugging-all-actions-of-a-speaker">
+       unplugging all actions of a speaker
+    </a>
+    </li>
+
+  
+    
+      <li>
+    <a class="btn-large"
+       href="#unplugging-all-actions-of-all-existing-speakers">
+       unplugging all actions of all existing speakers
+    </a>
+    </li>
+
+  
+    
+  
+    
+  
+              
+          </ul>
+
+        </div><!-- .span4 -->
+        <div class="span8" style="padding-bottom: 150px;margin-top: 90px;">
+          <a href="#init" id="init" name="init"></a>
+          <h1 id="installing" name="installing"><a href="#installing">Installing</a></h1><div class="highlight"><pre name="installing-example-1">pip install speakers
+</pre></div>
+<h1 id="declare-an-event" name="declare-an-event"><a href="#declare-an-event">declare an event</a></h1>
+<p>Speaker takes a <code>name</code> and a list of <code>events</code>,</p>
+<div class="highlight"><pre name="declare-an-event-example-1"><span class="kn">import</span> <span class="nn">sure</span>
+<span class="kn">from</span> <span class="nn">mock</span> <span class="kn">import</span> <span class="n">Mock</span>
+<span class="kn">from</span> <span class="nn">speakers</span> <span class="kn">import</span> <span class="n">Speaker</span>
+
+<span class="n">after</span> <span class="o">=</span> <span class="n">Speaker</span><span class="p">(</span><span class="s">'after'</span><span class="p">,</span> <span class="p">[</span><span class="s">'getting_sql_results'</span><span class="p">])</span>
+</pre></div>
+
+<p>Another example, let&#39;s say you are building a DOM API</p>
+<div class="highlight"><pre name="declare-an-event-example-2"><span class="n">on</span> <span class="o">=</span> <span class="n">Speaker</span><span class="p">(</span><span class="s">'on'</span><span class="p">,</span> <span class="p">[</span><span class="s">'ready'</span><span class="p">,</span> <span class="s">'loading'</span><span class="p">])</span>
+
+<span class="nd">@on.ready</span>
+<span class="k">def</span> <span class="nf">show_ready</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">dom</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">"The DOM is ready!"</span>
+    <span class="k">print</span> <span class="s">"The page title is"</span><span class="p">,</span> <span class="n">dom</span><span class="o">.</span><span class="n">cssselect</span><span class="p">(</span><span class="s">"title"</span><span class="p">)</span>
+
+<span class="nd">@on.loading</span>
+<span class="k">def</span> <span class="nf">show_loading</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">"Loading DOM, please wait"</span>
+
+<span class="n">on</span><span class="o">.</span><span class="n">loading</span><span class="o">.</span><span class="n">shout</span><span class="p">()</span>
+
+
+<span class="n">fake_dom</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
+<span class="n">fake_dom</span><span class="o">.</span><span class="n">cssselect</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="s">"A cool title!"</span>
+
+<span class="n">on</span><span class="o">.</span><span class="n">loading</span><span class="o">.</span><span class="n">shout</span><span class="p">()</span>
+<span class="n">on</span><span class="o">.</span><span class="n">ready</span><span class="o">.</span><span class="n">shout</span><span class="p">(</span><span class="n">fake_dom</span><span class="p">)</span>
+
+<span class="n">fake_dom</span><span class="o">.</span><span class="n">cssselect</span><span class="o">.</span><span class="n">assert_called_once_with</span><span class="p">(</span><span class="s">"title"</span><span class="p">)</span>
+</pre></div>
+<h1 id="declare-as-many-listeners-as-you-want" name="declare-as-many-listeners-as-you-want"><a href="#declare-as-many-listeners-as-you-want">declare as many listeners as you want</a></h1><div class="highlight"><pre name="declare-as-many-listeners-as-you-want-example-1"><span class="nd">@after.getting_sql_results</span>
+<span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">"Doing query results"</span>
+    <span class="k">print</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">"Query result"</span><span class="p">,</span> <span class="n">r</span>
+</pre></div>
+<h1 id="emit-the-event" name="emit-the-event"><a href="#emit-the-event">emit the event</a></h1><div class="highlight"><pre name="emit-the-event-example-1"><span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="s">"res1"</span><span class="p">,</span> <span class="s">"res2"</span><span class="p">,</span> <span class="s">"res3"</span><span class="p">]</span>
+<span class="n">after</span><span class="o">.</span><span class="n">getting_sql_results</span><span class="o">.</span><span class="n">shout</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+<h1 id="declare-exception-handlers" name="declare-exception-handlers"><a href="#declare-exception-handlers">declare exception handlers</a></h1>
+<p>Speakers allows you to declare a single exception handler function per speaker instance.</p>
+
+<p>You can decorate a function that must take 4 arguments:</p>
+
+<ul>
+<li><code>event</code>: the Speaker instance</li>
+<li><code>exc</code>: the exception instance, you could use the <a href="http://docs.python.org/2/library/traceback.html#traceback.format_exc" title="None"><code>traceback</code></a> module to print the full exception trace if you want.</li>
+<li><code>args</code> a tuple containing the arguments passed to the callback which raised the current exception</li>
+<li><code>kwargs</code> a dictionary containing the keyword arguments passed to the callback which raised the current exception.</li>
+</ul>
+
+<p>Example:</p>
+<div class="highlight"><pre name="declare-exception-handlers-example-1"><span class="n">on</span> <span class="o">=</span> <span class="n">Speaker</span><span class="p">(</span><span class="s">'on'</span><span class="p">,</span> <span class="p">[</span><span class="s">'ready'</span><span class="p">,</span> <span class="s">'loading'</span><span class="p">])</span>
+
+<span class="nd">@on.exception_handler</span>
+<span class="k">def</span> <span class="nf">print_exception</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">exc</span><span class="o">.</span><span class="n">should</span><span class="o">.</span><span class="n">be</span><span class="o">.</span><span class="n">a</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">)</span>
+
+    <span class="k">print</span> <span class="n">exc</span>
+
+<span class="nd">@on.loading</span>
+<span class="k">def</span> <span class="nf">show_loading</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="c"># this should raise a TypeError</span>
+    <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="p">{</span><span class="s">'foo'</span><span class="p">:</span> <span class="s">'bar'</span><span class="p">}</span>
+
+<span class="n">on</span><span class="o">.</span><span class="n">loading</span><span class="o">.</span><span class="n">shout</span><span class="p">()</span>
+</pre></div>
+<h1 id="unplugging-events" name="unplugging-events"><a href="#unplugging-events">unplugging events</a></h1><h3 id="a-single-event-callback" name="a-single-event-callback"><a href="#a-single-event-callback">a single event callback</a></h3><div class="highlight"><pre name="unplugging-events-example-1"><span class="n">when</span> <span class="o">=</span> <span class="n">Speaker</span><span class="p">(</span><span class="s">'when'</span><span class="p">,</span> <span class="p">[</span><span class="s">'ready'</span><span class="p">])</span>
+
+<span class="nd">@when.ready</span>
+<span class="k">def</span> <span class="nf">never_called</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">"BOOM"</span><span class="p">)</span>
+
+<span class="nd">@when.ready</span>
+<span class="k">def</span> <span class="nf">called_once</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">hooks</span><span class="p">[</span><span class="s">"ready"</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
+
+
+<span class="n">when</span><span class="o">.</span><span class="n">ready</span><span class="o">.</span><span class="n">unplug</span><span class="p">(</span><span class="n">never_called</span><span class="p">)</span>
+
+<span class="c"># calls the function `called_once`</span>
+<span class="n">when</span><span class="o">.</span><span class="n">ready</span><span class="o">.</span><span class="n">shout</span><span class="p">()</span>
+</pre></div>
+<h3 id="unplugging-an-action-of-a-speaker" name="unplugging-an-action-of-a-speaker"><a href="#unplugging-an-action-of-a-speaker">unplugging an action of a speaker</a></h3><div class="highlight"><pre name="unplugging-events-example-2"><span class="n">when</span> <span class="o">=</span> <span class="n">Speaker</span><span class="p">(</span><span class="s">'when'</span><span class="p">,</span> <span class="p">[</span><span class="s">'ready'</span><span class="p">])</span>
+
+<span class="nd">@when.ready</span>
+<span class="k">def</span> <span class="nf">never_called</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">"BOOM"</span><span class="p">)</span>
+
+<span class="nd">@when.ready</span>
+<span class="k">def</span> <span class="nf">called_once</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">hooks</span><span class="p">[</span><span class="s">"ready"</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
+
+
+<span class="n">when</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="s">'ready'</span><span class="p">)</span>
+
+<span class="c"># nothing will happen</span>
+<span class="n">when</span><span class="o">.</span><span class="n">ready</span><span class="o">.</span><span class="n">shout</span><span class="p">()</span>
+</pre></div>
+<h3 id="unplugging-all-actions-of-a-speaker" name="unplugging-all-actions-of-a-speaker"><a href="#unplugging-all-actions-of-a-speaker">unplugging all actions of a speaker</a></h3><div class="highlight"><pre name="unplugging-events-example-3"><span class="n">when</span> <span class="o">=</span> <span class="n">Speaker</span><span class="p">(</span><span class="s">'when'</span><span class="p">,</span> <span class="p">[</span><span class="s">'ready'</span><span class="p">,</span> <span class="s">'loading'</span><span class="p">])</span>
+
+<span class="nd">@when.ready</span>
+<span class="k">def</span> <span class="nf">dont_call_me</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">"You got served"</span><span class="p">)</span>
+
+<span class="nd">@when.loading</span>
+<span class="k">def</span> <span class="nf">do_something</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">"You got served"</span><span class="p">)</span>
+
+<span class="n">when</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+<span class="c"># nothing will happen</span>
+<span class="n">when</span><span class="o">.</span><span class="n">ready</span><span class="o">.</span><span class="n">shout</span><span class="p">()</span>
+</pre></div>
+<h3 id="unplugging-all-actions-of-all-existing-speakers" name="unplugging-all-actions-of-all-existing-speakers"><a href="#unplugging-all-actions-of-all-existing-speakers">unplugging all actions of all existing speakers</a></h3><div class="highlight"><pre name="unplugging-events-example-4"><span class="n">when</span> <span class="o">=</span> <span class="n">Speaker</span><span class="p">(</span><span class="s">'when'</span><span class="p">,</span> <span class="p">[</span><span class="s">'ready'</span><span class="p">,</span> <span class="s">'loading'</span><span class="p">])</span>
+<span class="n">after</span> <span class="o">=</span> <span class="n">Speaker</span><span class="p">(</span><span class="s">'after'</span><span class="p">,</span> <span class="p">[</span><span class="s">'ready'</span><span class="p">,</span> <span class="s">'loading'</span><span class="p">])</span>
+
+<span class="nd">@when.ready</span>
+<span class="k">def</span> <span class="nf">dont_call_me</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">"You got served"</span><span class="p">)</span>
+
+<span class="nd">@when.loading</span>
+<span class="k">def</span> <span class="nf">do_something</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">"You got served"</span><span class="p">)</span>
+
+<span class="nd">@after.ready</span>
+<span class="k">def</span> <span class="nf">after_all</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">"You got served"</span><span class="p">)</span>
+
+<span class="nd">@after.loading</span>
+<span class="k">def</span> <span class="nf">loading_after</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">"You got served"</span><span class="p">)</span>
+
+<span class="n">Speaker</span><span class="o">.</span><span class="n">release_all</span><span class="p">()</span>
+
+<span class="n">when</span><span class="o">.</span><span class="n">ready</span><span class="o">.</span><span class="n">shout</span><span class="p">()</span>
+</pre></div>
+
+        </div>
+      </div>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="span3">
+            <h3 class="footer-title">Speakers</h3>
+            <p>Speakers is maintained by <a href="http://github.com/gabrielfalcao">gabrielfalcao</a>. <br />
+              This documentation was generated automatically by <a href="http://octomarks.io/gabrielfalcao/markment">Markment</a>.
+            </p>
+          </div> <!-- /span8 -->
+          <div class="span4">
+          </div>
+          <div class="span5">
+            <div class="well">
+              <h3 class="footer-title">Table of contents</h3>
+              <ul class="nav nav-list">
+                 
+                <li>
+                  <a href="./about.html">
+                        about
+                  </a>
+                </li>
+                 
+                <li>
+                  <a href="./quick-start.html">
+                        quick-start
+                  </a>
+                </li>
+                 
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
