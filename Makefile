@@ -7,8 +7,8 @@ export PYTHONPATH:=  ${PWD}
 test: clean
 	@echo "Running tests"
 	@nosetests --cover-branches --with-coverage  --cover-erase --cover-package=speakers --stop -v -s tests
-	@steadymark README.md
-	@steadymark docs/*.md
+	@cd docs && make html
+
 docs: clean
 	@steadymark docs/*.md
 	@git co master && \
