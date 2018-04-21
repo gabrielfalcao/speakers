@@ -1,30 +1,24 @@
-all: test
+deps:
+	@(2>&1 which pipenv > /dev/null) || pip install pipenv
+	@pipenv install --dev
+	@pipenv run python setup.py develop
 
-filename=speakers-`python -c 'import speakers.version;print speakers.version.version'`.tar.gz
+tests:
+	pipenv run nosetests tests --rednose
 
-export PYTHONPATH:=  ${PWD}
+html-docs:
+	cd docs && make html
 
-test: clean
-	@echo "Running tests"
-	@nosetests --cover-branches --with-coverage  --cover-erase --cover-package=speakers --stop -v -s tests
-	@cd docs && make html
+docs: html-docs
+	open docs/build/html/index.html
 
-docs: clean
-	@steadymark docs/*.md
-	@git co master && \
-		(git br -D gh-pages || printf "") && \
-		git checkout --orphan gh-pages && \
-		markment -o . -t theme docs --sitemap-for=http://falcao.it/speakers && \
-		cp quick-start.html index.html && \
-		git add . && \
-		git commit -am 'documentation' && \
-		git push --force origin gh-pages && \
-		git checkout master
-clean:
-	@printf "Cleaning up files that are already in .gitignore... "
-	@for pattern in `cat .gitignore`; do rm -rf $$pattern; find . -name "$$pattern" -exec rm -rf {} \;; done
-	@echo "OK!"
-
-release: test
+release:
+	@rm -rf dist/*
 	@./.release
-	@python setup.py sdist register upload
+	@make pypi
+
+pypi:
+	@pipenv run python setup.py build sdist
+	@pipenv run twine upload dist/*.tar.gz
+
+.PHONY: docs tests

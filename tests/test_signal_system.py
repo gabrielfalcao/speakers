@@ -24,8 +24,6 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-from __future__ import unicode_literals
-
 from mock import Mock
 from speakers.bus import Function, Speaker
 from speakers.bus import _function_matches
@@ -39,10 +37,16 @@ def test_function_matches_compares_with_abs_path():
             co_filename = "/some/path/to/some/../file.py"
             co_firstlineno = 1
 
+        class __code__(func_code):
+            pass
+
     class fakecallback2:
         class func_code:
             co_filename = "/some/path/to/file.py"
             co_firstlineno = 1
+
+        class __code__(func_code):
+            pass
 
     assert _function_matches(fakecallback1, fakecallback2), \
         'the callbacks should have matched'
@@ -56,7 +60,7 @@ def test_function_as_string():
 
     s = Function(testing)
 
-    str(s).should.equal('Function(name="testing", lineno="55", filename="tests/test_signal_system.py")')
+    str(s).should.equal('Function(name="testing", lineno="59", filename="tests/test_signal_system.py")')
 
 
 def test_function_repr():
@@ -67,21 +71,21 @@ def test_function_repr():
 
     s = Function(testing)
 
-    repr(s).should.equal(b'Function(name="testing", lineno="66", filename="tests/test_signal_system.py")')
+    repr(s).should.equal('Function(name="testing", lineno="70", filename="tests/test_signal_system.py")')
 
 
 def test_speaker_with_wrong_parameter():
     "Speaker takes list of strings"
 
     Speaker.when.called_with("Testing", "foo").should.throw(
-        TypeError, "actions must be a list of strings. Got u'foo'")
+        TypeError, "actions must be a list of strings. Got 'foo'")
 
 
 def test_speaker_as_string():
     "Speaker as string"
 
     sp = Speaker("AwesomeSauce", ['do this', 'do that'])
-    str(sp).should.eql("Speaker(name=awesomesauce, actions=OrderedDict([(u'do_this', partial:for_decorator), (u'do_that', partial:for_decorator)]), total_hooks=0)")
+    str(sp).should.eql("Speaker(name=awesomesauce, actions=OrderedDict([('do_this', partial:for_decorator), ('do_that', partial:for_decorator)]), total_hooks=0)")
 
 
 def test_listeners_hear_to_speakers():
@@ -106,7 +110,7 @@ def test_speaker_keys():
 
     sp = Speaker('before', ['file_created'])
     sp.file_created(obeyer).key.should.equal(
-        'before:file_created[tests.test_signal_system:obeyer:105]')
+        'before:file_created[tests.test_signal_system:obeyer:109]')
 
 
 def test_listeners_with_exceptions():
@@ -176,7 +180,7 @@ def test_2_listeners_with_exception_handler():
         pass
 
     before.exception_handler.when.called_with(lambda: None).should.throw(
-        RuntimeError, 'Attempt to register Function(name="<lambda>", lineno="179", filename="tests/test_signal_system.py") as an exception_handler for Speaker(name=on, actions=OrderedDict([(u\'file_created\', partial:for_decorator)]), total_hooks=0), but it already has <bound method Speaker.exception_handler of Speaker(name=on, actions=OrderedDict([(u\'file_created\', partial:for_decorator)]), total_hooks=0)> assigned')
+        RuntimeError, 'Attempt to register Function(name="<lambda>", lineno="183", filename="tests/test_signal_system.py") as an exception_handler for Speaker(name=on, actions=OrderedDict([(\'file_created\', partial:for_decorator)]), total_hooks=0), but it already has <bound method Speaker.exception_handler of Speaker(name=on, actions=OrderedDict([(\'file_created\', partial:for_decorator)]), total_hooks=0)> assigned')
 
 
 def test_unregister_listeners():
