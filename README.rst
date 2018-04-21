@@ -4,6 +4,12 @@
 .. image:: https://travis-ci.org/gabrielfalcao/speakers.svg?branch=master
     :target: https://travis-ci.org/gabrielfalcao/speakers
 
+Supports:
+
+- ``Python 2.7``
+- ``Python 3.6``
+
+
 declare an event
 ~~~~~~~~~~~~~~~~
 
