@@ -2,7 +2,7 @@ tests: deps
 	pipenv run nosetests tests --rednose
 
 deps:
-	@pipenv install --dev
+	@pipenv install --dev --skip-lock
 	@pipenv run python setup.py develop
 
 

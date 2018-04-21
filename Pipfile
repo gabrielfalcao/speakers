@@ -21,8 +21,3 @@ mock = "*"
 coverage = "*"
 ipdb = "*"
 tox = "*"
-
-
-[requires]
-
-python_version = "3.6"
