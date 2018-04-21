@@ -31,22 +31,39 @@ import sys
 from collections import OrderedDict, defaultdict
 from functools import wraps
 
+from six import text_type as unicode
+from six import binary_type
+from six import PY3
+
 from .handy import underlinefy, nicepartial
 ENCODE = 'utf-8'
 
 
+def force_bytes(s):
+    if PY3:
+        return binary_type(s, 'ascii').decode('ascii')
+
+    return binary_type(s)
+
+
 def _function_matches(one, other):
-    return (os.path.abspath(one.func_code.co_filename) == os.path.abspath(other.func_code.co_filename) and
-            one.func_code.co_firstlineno == other.func_code.co_firstlineno)
+    one_code = get_code(one)
+    other_code = get_code(other)
+    return (os.path.abspath(one_code.co_filename) == os.path.abspath(other_code.co_filename) and
+            one_code.co_firstlineno == other_code.co_firstlineno)
+
+
+def get_code(func):
+    return getattr(func, 'func_code', getattr(func, '__code__'))
 
 
 class Function(object):
     def __init__(self, func):
         self.call = func
-
         self.name = func.__name__
-        self.filename = os.path.relpath(func.func_code.co_filename)
-        self.lineno = func.func_code.co_firstlineno + 1
+        self.code = get_code(func)
+        self.filename = os.path.relpath(self.code.co_filename)
+        self.lineno = self.code.co_firstlineno + 1
 
     @property
     def module_name(self):
@@ -70,12 +87,13 @@ class Function(object):
         return self.as_string()
 
     def __repr__(self):
-        return self.as_string().encode(ENCODE)
+        return unicode(self.as_string())
 
     def __call__(self, *args, **kw):
         sys.stdout = sys.__stdout__
         sys.stderr = sys.__stderr__
         return self.call(*args, **kw)
+
 
 SPEAKERS = OrderedDict()
 
@@ -103,7 +121,7 @@ class Speaker(object):
             self.name, self.actions, len(self.hooks))
 
     def __repr__(self):
-        return str(self).encode(ENCODE)
+        return unicode(self)
 
     def __base_exc_handler(self, speaker, exception, args, kwargs):
         raise
@@ -134,13 +152,13 @@ class Speaker(object):
 
             return res
 
-        responder.key = b'{speaker}:{action}[{module}:{hook}:{lineno}]'.format(
+        responder.key = force_bytes('{speaker}:{action}[{module}:{hook}:{lineno}]'.format(
             speaker=self.name,
             action=safe_action,
             module=responder.module_name,
             hook=wrapper.__name__,
             lineno=responder.lineno,
-        )
+        ))
         wrapper.callback = callback
         wrapper.responder = responder
         self.hooks[action].append(wrapper)
@@ -160,7 +178,7 @@ class Speaker(object):
 
     def release(self, action=None):
         if action is None:
-            return map(self.release, self.hooks.keys())
+            return list(map(self.release, self.hooks.keys()))
 
         while self.hooks[action]:
             self.hooks[action].pop()

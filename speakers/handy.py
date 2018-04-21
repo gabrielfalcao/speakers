@@ -23,8 +23,7 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
-from __future__ import unicode_literals
-
+from six import text_type
 import re
 
 
@@ -48,4 +47,4 @@ class nicepartial(object):
         return self.func(*(self.args + args), **new)
 
     def __repr__(self):
-        return b'partial:{0}'.format(self.func.__name__)
+        return text_type('partial:{0}'.format(self.func.__name__))

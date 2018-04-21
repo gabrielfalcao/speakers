@@ -1,4 +1,3 @@
-# #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # <speakers - simple signal system for python>
 # Copyright (C) <2013>  Gabriel Falcão <gabriel@nacaolivre.org>
