@@ -33,9 +33,17 @@ from functools import wraps
 
 from six import text_type as unicode
 from six import binary_type
+from six import PY3
 
 from .handy import underlinefy, nicepartial
 ENCODE = 'utf-8'
+
+
+def force_bytes(s):
+    if PY3:
+        return binary_type(s, 'ascii').decode('ascii')
+
+    return binary_type(s)
 
 
 def _function_matches(one, other):
@@ -144,13 +152,13 @@ class Speaker(object):
 
             return res
 
-        responder.key = binary_type('{speaker}:{action}[{module}:{hook}:{lineno}]'.format(
+        responder.key = force_bytes('{speaker}:{action}[{module}:{hook}:{lineno}]'.format(
             speaker=self.name,
             action=safe_action,
             module=responder.module_name,
             hook=wrapper.__name__,
             lineno=responder.lineno,
-        ), 'ascii').decode('ascii')
+        ))
         wrapper.callback = callback
         wrapper.responder = responder
         self.hooks[action].append(wrapper)

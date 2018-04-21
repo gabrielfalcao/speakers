@@ -1,10 +1,10 @@
+tests: deps
+	pipenv run nosetests tests --rednose
+
 deps:
-	@(2>&1 which pipenv > /dev/null) || pip install pipenv
 	@pipenv install --dev
 	@pipenv run python setup.py develop
 
-tests:
-	pipenv run nosetests tests --rednose
 
 html-docs:
 	cd docs && make html
@@ -20,5 +20,8 @@ release:
 pypi:
 	@pipenv run python setup.py build sdist
 	@pipenv run twine upload dist/*.tar.gz
+
+tox:
+	@pipenv run tox
 
 .PHONY: docs tests
