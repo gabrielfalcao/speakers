@@ -1,5 +1,5 @@
 .. image:: https://readthedocs.org/projects/speakers/badge/?version=latest
-    :target: http://speakers.readthedocs.io/en/latest/?badge=latest
+    :target: https://speakers.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 .. image:: https://travis-ci.org/gabrielfalcao/speakers.svg?branch=master
     :target: https://travis-ci.org/gabrielfalcao/speakers
